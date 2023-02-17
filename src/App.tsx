@@ -1,12 +1,25 @@
 import {useContext, useRef, useState} from 'react'
 import {AppContext, AppContextProvider} from "./AppContext";
-import {AppBar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
-import {Menu as MenuIcon, AccountCircle as AccountCircleIcon} from '@mui/icons-material'
+import {
+    AppBar,
+    Box,
+    Button,
+    Container, createTheme, CssBaseline,
+    Drawer,
+    Grid,
+    IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText,
+    Menu,
+    MenuItem, ThemeProvider,
+    Toolbar,
+    Typography
+} from "@mui/material";
+import {Menu as MenuIcon, AccountCircle as AccountCircleIcon, Description as DescriptionIcon} from '@mui/icons-material'
 
 function App() {
 
     const {isLoggedIn, setIsLoggedIn} = useContext(AppContext);
     const [isAccountMenuOpen, setIsAccountMenuOpen] = useState<boolean>(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
     const accountButtonRef = useRef(null)
 
     const handleLogout = () => {
@@ -14,45 +27,79 @@ function App() {
         setIsAccountMenuOpen(false)
     }
 
+    const darkTheme = createTheme({
+        palette: {
+            mode: 'dark',
+        },
+    });
+
+
     return (
-        <Box sx={{flexGrow: 1}}>
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline/>
             <AppBar position="static">
-                <Toolbar sx={{backgroundColor: 'darkorange'}}>
+                <Toolbar id='top-nav-bar' sx={{backgroundColor: 'darkorange'}}>
                     <IconButton
+                        id='main-menu'
                         size="large"
                         edge="start"
                         color="inherit"
                         aria-label="menu"
                         sx={{mr: 2}}
+                        onClick={() => setIsSidebarOpen(true)}
                     >
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         PWRfleet v1.5 Demo - Vite
                     </Typography>
-                    {!isLoggedIn && <Button variant='contained' color='primary' onClick={() => setIsLoggedIn(true)}>Log
+                    {!isLoggedIn && <Button variant='contained' onClick={() => setIsLoggedIn(true)}>Log
                         in</Button>}
                     {isLoggedIn && <>
-                        <IconButton ref={accountButtonRef} onClick={()=>setIsAccountMenuOpen(true)}>
-                            <AccountCircleIcon sx={{color: 'black'}}/>
-                            <Typography ml={1} variant='body1' color={'black'}>PWRuser</Typography>
+                        <IconButton ref={accountButtonRef} onClick={() => setIsAccountMenuOpen(true)}>
+                            <AccountCircleIcon />
+                            <Typography ml={1} variant='body1'>PWRuser</Typography>
                         </IconButton>
                     </>
                     }
                     <Menu
-                        id="basic-menu"
+                        id="account-menu"
                         anchorEl={accountButtonRef.current ?? null}
                         open={isAccountMenuOpen}
-                        onClose={()=>setIsAccountMenuOpen(false)}
+                        onClose={() => setIsAccountMenuOpen(false)}
                         MenuListProps={{
                             'aria-labelledby': 'basic-button',
                         }}
                     >
-                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                        <MenuItem onClick={handleLogout}>Log Out</MenuItem>
                     </Menu>
+                    <Drawer
+                        anchor='left'
+                        open={isSidebarOpen}
+                        onClose={() => setIsSidebarOpen(false)}
+                    >
+                        <List>
+                            <ListItem>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <DescriptionIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Test'}/>
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <DescriptionIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Page 2'}/>
+                                </ListItemButton>
+                            </ListItem>
+                        </List>
+                    </Drawer>
                 </Toolbar>
             </AppBar>
-        </Box>
+        </ThemeProvider>
     )
 }
 
