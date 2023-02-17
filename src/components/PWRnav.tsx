@@ -43,6 +43,7 @@ export const PWRNav: FC = () => {
                 <Box sx={{ flexGrow: 1, display: 'flex', gap: 2 }}>
                     <MUILink sx={{display: 'flex', flexDirection: 'row'}} to={'/'} component={RouterNavLink}>Home</MUILink>
                     <MUILink sx={{display: 'flex', flexDirection: 'row'}} to={'dashboard'} component={RouterNavLink}>Dashboard</MUILink>
+                    <MUILink sx={{display: 'flex', flexDirection: 'row'}} to={'protected'} component={RouterNavLink}>Protected</MUILink>
                 </Box>
 
 
