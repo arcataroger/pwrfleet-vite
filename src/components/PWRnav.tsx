@@ -9,21 +9,22 @@ import {
     Menu,
     MenuItem,
     Toolbar,
-    Typography
+    Typography,
+    Link as MUILink, Box
 } from "@mui/material";
 import {
     AccountCircle as AccountCircleIcon,
     Description as DescriptionIcon,
     Menu as MenuIcon
 } from "@mui/icons-material";
-import {useContext, useRef, useState} from "react";
+import {FC, useContext, useRef, useState} from "react";
 import {AppContext} from "../AppContext";
+import {Link, NavLink as RouterNavLink, Routes} from "react-router-dom";
 
-export const PWRNav = () => {
+export const PWRNav: FC = () => {
 
     const {isLoggedIn, setIsLoggedIn} = useContext(AppContext);
     const [isAccountMenuOpen, setIsAccountMenuOpen] = useState<boolean>(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
     const accountButtonRef = useRef(null)
 
     const handleLogout = () => {
@@ -31,66 +32,43 @@ export const PWRNav = () => {
         setIsAccountMenuOpen(false)
     }
 
-    return <AppBar position="static">
-        <Toolbar id='top-nav-bar' sx={{backgroundColor: 'darkorange'}}>
-            <IconButton
-                id='main-menu'
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{mr: 2}}
-                onClick={() => setIsSidebarOpen(true)}
-            >
-                <MenuIcon/>
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                PWRfleet v1.5 Demo - Vite
-            </Typography>
-            {!isLoggedIn && <Button variant='contained' onClick={() => setIsLoggedIn(true)}>Log
-                in</Button>}
-            {isLoggedIn && <>
-                <IconButton ref={accountButtonRef} onClick={() => setIsAccountMenuOpen(true)}>
-                    <AccountCircleIcon/>
-                    <Typography ml={1} variant='body1'>PWRuser</Typography>
-                </IconButton>
-            </>
-            }
-            <Menu
-                id="account-menu"
-                anchorEl={accountButtonRef.current ?? null}
-                open={isAccountMenuOpen}
-                onClose={() => setIsAccountMenuOpen(false)}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }}
-            >
-                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-            </Menu>
-            <Drawer
-                anchor='left'
-                open={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-            >
-                <List>
-                    <ListItem>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <DescriptionIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary={'Test'}/>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <DescriptionIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary={'Page 2'}/>
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </Drawer>
-        </Toolbar>
-    </AppBar>
+
+    return <>
+        <AppBar position="static">
+            <Toolbar id='top-nav-bar'>
+                <Typography variant="h6" component="div" sx={{mr: 4}}>
+                    PWRfleet v1.5 Demo: Vite + React-Router
+                </Typography>
+
+                <Box sx={{ flexGrow: 1, display: 'flex', gap: 2 }}>
+                    <MUILink sx={{display: 'flex', flexDirection: 'row'}} to={'/'} component={RouterNavLink}>Home</MUILink>
+                    <MUILink sx={{display: 'flex', flexDirection: 'row'}} to={'dashboard'} component={RouterNavLink}>Dashboard</MUILink>
+                </Box>
+
+
+                {!isLoggedIn && <Button variant='contained' onClick={() => setIsLoggedIn(true)}>Log
+                    in</Button>}
+                {isLoggedIn && <>
+                    <IconButton ref={accountButtonRef} onClick={() => setIsAccountMenuOpen(true)}>
+                        <AccountCircleIcon/>
+                        <Typography ml={1} variant='body1'>PWRuser</Typography>
+                    </IconButton>
+                </>
+                }
+
+                <Menu
+                    id="account-menu"
+                    anchorEl={accountButtonRef.current ?? null}
+                    open={isAccountMenuOpen}
+                    onClose={() => setIsAccountMenuOpen(false)}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                >
+                    <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                </Menu>
+
+            </Toolbar>
+        </AppBar>
+    </>
 }
