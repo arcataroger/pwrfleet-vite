@@ -36,9 +36,9 @@ function App() {
             <Routes>
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<HomePage/>}/>
-                    <Route path="/dashboard" element={<DashboardPage/>}/>
-                    <Route path="/protected" element={<ProtectedPage/>}/>
-                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="dashboard" element={<DashboardPage/>}/>
+                    <Route path="protected" element={<ProtectedPage/>}/>
+                    <Route path="login" element={<LoginPage/>}/>
                     <Route path="*" element={<ErrorPage/>}/>
                 </Route>
             </Routes>
