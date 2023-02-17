@@ -37,7 +37,7 @@ export const PWRNav: FC = () => {
         <AppBar position="static">
             <Toolbar id='top-nav-bar'>
                 <Typography variant="h6" component="div" sx={{mr: 4}}>
-                    PWRfleet Vite + React-Router Proof-of-Concept
+                    PWRfleet Vite + React-Router 6 Proof-of-Concept
                 </Typography>
 
                 <Box sx={{ flexGrow: 1, display: 'flex', gap: 2 }}>
